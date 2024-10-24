@@ -36,6 +36,14 @@ public class TransactionsService {
         return processDeposit(amount, TransactionType.EXTERNAL_DEPOSIT);
     }
 
+    public TransactionDoneResponseDto processPhysicalPurchase(BigDecimal amount) {
+        return processDeposit(amount.abs().negate(), TransactionType.PHYSICAL_PURCHASE);
+    }
+
+    public TransactionDoneResponseDto processOnlinePurchase(BigDecimal amount) {
+        return processDeposit(amount.abs().negate(), TransactionType.ONLINE_PURCHASE);
+    }
+
     private void applyTransactionToAccount(Account account, BigDecimal amount, TransactionType transactionType, String description) {
         account.transactAmount(amount);
         Transaction transaction = this.transactionFactory.createTransaction(
@@ -50,7 +58,6 @@ public class TransactionsService {
     private TransactionDoneResponseDto processDeposit(BigDecimal amount, TransactionType transactionType) {
         BigDecimal fee = this.feesRepository.getFeeValueByTransactionType(transactionType);
 
-        if (fee.abs().compareTo(amount) > 0) {
         if (amount.compareTo(BigDecimal.ZERO) > 0 && fee.abs().compareTo(amount) > 0) {
             throw new MinimumAmountNotReachedException("The amount for this transaction should be greater than $" + fee);
         }
