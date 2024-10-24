@@ -8,7 +8,7 @@ public class InMemoryAccountRepository implements AccountRepository {
 
     @Override
     public Account getAccount() {
-        return globalAccount;
+        return new Account(globalAccount);
     }
 
     @Override

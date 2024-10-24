@@ -51,6 +51,7 @@ public class TransactionsService {
         BigDecimal fee = this.feesRepository.getFeeValueByTransactionType(transactionType);
 
         if (fee.abs().compareTo(amount) > 0) {
+        if (amount.compareTo(BigDecimal.ZERO) > 0 && fee.abs().compareTo(amount) > 0) {
             throw new MinimumAmountNotReachedException("The amount for this transaction should be greater than $" + fee);
         }
 

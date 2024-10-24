@@ -16,6 +16,11 @@ public class Account {
         this.transactions = new LinkedList<>();
     }
 
+    public Account(Account other) {
+        this.balance = other.balance;
+        this.transactions = new LinkedList<>(other.transactions);
+    }
+
     public BigDecimal getBalance() {
         return balance;
     }
